@@ -3,7 +3,13 @@ const { Schema, model } = mongoose;
 
 const fileSchema = new Schema({
   name: String,
-  creationDate: Date,
+  description: String,
+  dateAdded: Date,
+  datePublished: Date,
+  group: {
+    id: Schema.Types.UUID,
+    index: Number,
+  },
   tag: [String],
   url: [String],
   checksum: String,

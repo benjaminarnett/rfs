@@ -1,26 +1,25 @@
-import mongoose from "mongoose";
-import File from "./model/File.js";
+import fs from "fs";
 
-// const db = mongoose.connect("mongodb://localhost/database");
+// check if file already exists via checksum
+// calcualte sha512 of file
+// if calculated value exists in data.json -> reject addition, if not -> add
 
-mongoose
-  .connect("mongodb://127.0.0.1:27017/mydatabase")
-  .then(() => {
-    console.log("Connected to MongoDB");
-  })
-  .catch((error) => {
-    console.error("Error connecting to MongoDB:", error);
-  });
+const writeStream = fs.createWriteStream("data.json");
+writeStream.write("Hello, world!\n");
 
-/*
-
-const file = new File({
-  name: "yea",
+/* 
+const fileSchema = new Schema({
+  name: String,
+  description: String,
+  dateAdded: Date,
+  datePublished: Date,
+  group: {
+    id: Schema.Types.UUID,
+    index: Number,
+  },
+  tag: [String],
+  url: [String],
+  checksum: String,
+  filepath: String,
 });
-
-await file.save();
-
-const firstFile = await File.findOne({});
-console.log(firstFile);
-
 */

@@ -1,6 +1,11 @@
-import files from "./files.json" assert { type: "json" };
 import multer from "multer";
 import express from "express";
+import { readFileSync, writeFileSync, createReadStream } from "fs";
+import { resolve } from "path";
+import { fileTypeFromStream } from "file-type";
+
+const jsonPath = resolve("./files.json");
+const files = JSON.parse(readFileSync(jsonPath));
 
 const upload = multer({ dest: "files/" });
 const app = express();
@@ -13,6 +18,7 @@ var formHTML = `
     <input type="file" id="file" name="file" /><br>
     <input type="text" id="name" name="name" /><br>
     <input type="text" id="description" name="description" />
+    <input type="hidden" name="checksum" />
   </div>
   <div>
     <button>Submit</button>
@@ -24,8 +30,16 @@ app.get("/add", (req, res) => {
   res.send(formHTML);
 });
 
-app.post("/add", upload.single("file"), function (req, res) {
-  console.log(req.file, req.body);
+app.post("/add", upload.single("file"), async function (req, res) {
+  //console.log(req.file, req.body);
+
+  const stream = createReadStream(req.file.path);
+  var fileType = await fileTypeFromStream(stream);
+  fileType = fileType.ext;
+
+  files.push(req.body);
+  //write file metadata to files.json
+  writeFileSync(jsonPath, JSON.stringify(files, null, 2));
   res.send("File duplicate check");
 });
 

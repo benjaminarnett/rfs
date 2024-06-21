@@ -4,6 +4,7 @@ import { readFileSync, writeFileSync, createReadStream, rename } from "fs";
 import fs from "fs/promises";
 import { resolve } from "path";
 import { fileTypeFromStream } from "file-type";
+import cors from "cors";
 
 const filesDir = "files/";
 const jsonPath = resolve("./files.json");
@@ -13,6 +14,11 @@ const upload = multer({ dest: filesDir });
 const app = express();
 const port = 3000;
 app.use(express.urlencoded({ extended: true }));
+
+app.use(cors({
+  origin: 'http://localhost:8080'
+}));
+
 
 var formHTML = `
 <form method="POST" action="/add" enctype="multipart/form-data">
@@ -57,22 +63,25 @@ var textHTML = `
 </form>
 `;
 
-app.get("/duplicate", (req, res) => {
+app.get("/check-duplicate", (req, res) => {
   res.send(textHTML);
 });
 
-app.post("/duplicate", (req, res) => {
+app.post("/check-duplicate", (req, res) => {
   // checksum generated from file on the client and sent as request
-  const checksum = req.body.checksum;
+  console.log('request recieved');
+  const checksum = req.body;
   var duplicate = false;
   // iterate through JSON to check whether file already exists
   for (let i = 0; i < files.length; i++) {
     if (files[i].checksum == checksum) {
       duplicate = true;
+      console.log(files[i]);
       break;
     }
   }
-  res.send("File duplicate check");
+  console.log(duplicate)
+  res.json({duplicate});
 });
 
 app.listen(port, () => {

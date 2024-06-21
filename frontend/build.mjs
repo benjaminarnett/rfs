@@ -8,7 +8,6 @@ try {
     sourcemap: false,
     jsx: 'automatic',
     define: { 'process.env.NODE_ENV': "'development'" },
-    target: ['chrome58','firefox57','safari11','edge16'],
     outdir: 'public'
   });
   await ctx.watch();

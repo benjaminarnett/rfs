@@ -1,7 +1,7 @@
 {
   "name": "frontend",
   "version": "1.0.0",
-  "main": "src/index.js",
+  "main": "src/index.jsx",
   "scripts": {
     "dev": "node build.mjs"
   },

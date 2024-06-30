@@ -1,9 +1,6 @@
 import { useState } from "react";
 
-
-
-
-function Button () {
+function FileInput () {
     const [isDuplicate, setIsDuplicate] = useState();
 
     handleFileChange = async event => {
@@ -12,36 +9,42 @@ function Button () {
         const hashBuffer = await crypto.subtle.digest('SHA-256', arrayBuffer);
         const hashArray = Array.from(new Uint8Array(hashBuffer));
         const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-        console.log(hashHex);
 
         const response = await fetch('http://localhost:3000/check-duplicate', {
             method: 'POST',
-            body: JSON.stringify(hashHex)
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({hashHex})
         });
         const data = await response.json();
         const duplicate = data.duplicate
-        console.log(duplicate)
-
+        setIsDuplicate(duplicate)
     }
 
     return (
         <>
-            <input type="file" id="file" name="file" onChange={this.handleFileChange} />
-            {!isDuplicate && <div>*File already exists</div>}
+            <form id="fileForm" action="http://localhost:3000/add" method="POST" enctype="multipart/form-data">
+                <input type="file" id="file" name="file" onChange={this.handleFileChange} />
+                {isDuplicate ? <div>*File already exists</div> : (
+                    <>
+                        <div>
+                            <label htmlFor="name">Name:</label>
+                            <input type="text" id="name" name="name" />
+                        </div>
+                        <input type="hidden" id="checksum" name="checksum" value="3487" />
+                        <input type="submit" value="Submit"></input>
+                    </>
+                )}
+            </form>
         </>
     );
 }
 
-
-
-
-
-
-
 export default function App() {
     return (
         <>
-         <Button />
+         <FileInput />
         </>
     );
 }

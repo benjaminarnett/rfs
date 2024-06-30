@@ -1,18 +1,24 @@
 import multer from "multer";
 import express from "express";
-import { readFileSync, writeFileSync, createReadStream, rename } from "fs";
-import fs from "fs/promises";
+import fs from "fs";
+import fsp from "fs/promises";
 import { resolve } from "path";
-import { fileTypeFromStream } from "file-type";
+import cors from "cors";
 
 const filesDir = "files/";
 const jsonPath = resolve("./files.json");
-const files = JSON.parse(readFileSync(jsonPath));
+const files = JSON.parse(fs.readFileSync(jsonPath));
 
 const upload = multer({ dest: filesDir });
 const app = express();
 const port = 3000;
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json())
+
+app.use(cors({
+  origin: 'http://localhost:8080'
+}));
+
 
 var formHTML = `
 <form method="POST" action="/add" enctype="multipart/form-data">
@@ -32,49 +38,27 @@ app.get("/add", (req, res) => {
 });
 
 app.post("/add", upload.single("file"), async function (req, res) {
-  //console.log(req.file, req.body);
-
-  const stream = createReadStream(req.file.path);
-  var fileType = await fileTypeFromStream(stream);
-  fileType = fileType.ext;
-
-  await fs.rename(req.file.path, filesDir + req.body.checksum + "." + fileType);
-
-  //files.push(req.body);
-  //write file metadata to files.json
-  //writeFileSync(jsonPath, JSON.stringify(files, null, 2));
-  res.send("File duplicate check");
+ 
+  res.send("added");
 });
 
-var textHTML = `
-<form method="POST" action="/duplicate">
-  <div>
-    <input type="text" id="checksum" name="checksum" />
-  </div>
-  <div>
-    <button>Submit</button>
-  </div>
-</form>
-`;
-
-app.get("/duplicate", (req, res) => {
-  res.send(textHTML);
-});
-
-app.post("/duplicate", (req, res) => {
+app.post("/check-duplicate", (req, res) => {
   // checksum generated from file on the client and sent as request
-  const checksum = req.body.checksum;
+  const checksum = req.body.hashHex;
   var duplicate = false;
   // iterate through JSON to check whether file already exists
   for (let i = 0; i < files.length; i++) {
+    // if checksum value in JSON file equals checksum sent from client
     if (files[i].checksum == checksum) {
+      // set duplicate to true
       duplicate = true;
+      // end loop
       break;
     }
   }
-  res.send("File duplicate check");
+  res.json({duplicate});
 });
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+  console.log(`App listening on port ${port}`);
 });

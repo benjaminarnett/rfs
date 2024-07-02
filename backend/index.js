@@ -18,7 +18,10 @@ app.use(express.json())
 app.use(cors({
   origin: 'http://localhost:8080'
 }));
+<<<<<<< HEAD
 
+=======
+>>>>>>> develop
 
 var formHTML = `
 <form method="POST" action="/add" enctype="multipart/form-data">
@@ -38,7 +41,16 @@ app.get("/add", (req, res) => {
 });
 
 app.post("/add", upload.single("file"), async function (req, res) {
+<<<<<<< HEAD
  
+=======
+  // rename file as checksum value
+  await fsp.rename(req.file.path, filesDir + req.body.checksum);
+  // add file metadata to list
+  files.push(req.body)
+  // write to files.json
+  fs.writeFileSync(jsonPath, JSON.stringify(files, null, 2));
+>>>>>>> develop
   res.send("added");
 });
 

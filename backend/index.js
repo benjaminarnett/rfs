@@ -19,21 +19,8 @@ app.use(cors({
   origin: 'http://localhost:8080'
 }));
 
-var formHTML = `
-<form method="POST" action="/add" enctype="multipart/form-data">
-  <div>
-    <input type="file" id="file" name="file" /><br>
-    <input type="text" id="name" name="name" /><br>
-    <input type="text" id="checksum" name="checksum" />
-  </div>
-  <div>
-    <button>Submit</button>
-  </div>
-</form>
-`;
-
-app.get("/add", (req, res) => {
-  res.send(formHTML);
+app.get("/files", (req, res) => {
+  res.json(files);
 });
 
 app.post("/add", upload.single("file"), async function (req, res) {
@@ -43,7 +30,7 @@ app.post("/add", upload.single("file"), async function (req, res) {
   files.push(req.body)
   // write to files.json
   fs.writeFileSync(jsonPath, JSON.stringify(files, null, 2));
-  res.send("added");
+  res.sendStatus(200);
 });
 
 app.post("/check-duplicate", (req, res) => {

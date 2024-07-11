@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-function FileInput () {
+export default function FileInput () {
     const [isDuplicate, setIsDuplicate] = useState();
     const [fileChecksum, setFileChecksum] = useState();
 
@@ -39,14 +39,6 @@ function FileInput () {
                     </>
                 )}
             </form>
-        </>
-    );
-}
-
-export default function App() {
-    return (
-        <>
-         <FileInput />
         </>
     );
 }

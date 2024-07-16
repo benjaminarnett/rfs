@@ -39,8 +39,24 @@ function fileDuplicationCheck(checksum) {
   return isDuplicateFile;
 }
 
-async function getFileType(file) {
-  const fileType = await fileTypeFromFile(file.path);
+async function getFileType(filePath, fileName) {
+  var fileType = await fileTypeFromFile(filePath);
+  if (fileType != undefined) {
+    fileType = "." + fileType.ext;
+    return fileType;
+  }
+  try {
+    var extArray = fileName.split('.');
+    const [head, ...tail] = extArray;
+    extArray = tail.filter(str => str !== "")
+    if (extArray.length == 0) {
+        throw "error";
+    }
+    fileType = "." + extArray.join(".")
+  } catch (error) {
+    fileType = "";
+  }
+  return fileType;
 }
 
 app.post("/add", upload.single("file"), async function (req, res) {
@@ -48,9 +64,11 @@ app.post("/add", upload.single("file"), async function (req, res) {
     res.sendStatus(403);
     return;
   }
-  const fileType = await getFileType(req.file)
+  const fileType = await getFileType(req.file.path, req.file.originalname)
   // rename file as checksum value
-  await fsp.rename(req.file.path, filesDir + req.body.checksum);
+  const newPath = filesDir + req.body.checksum + fileType;
+  await fsp.rename(req.file.path, newPath);
+  req.body.path = newPath;
   // add file metadata to list
   files.push(req.body)
   // write to files.json

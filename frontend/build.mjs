@@ -20,3 +20,4 @@ try {
 	console.error('An error occurred:', error);
 	process.exit(1);
 }
+

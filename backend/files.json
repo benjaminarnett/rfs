@@ -1,12 +1,12 @@
 [
   {
-    "path": "pathexample",
-    "checksum": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "name": "filenameexample"
-  },
-  {
     "name": "sdsd",
-    "checksum": "892b237cd3367b855960d1dd7bb9c001063a1f49926acdc53af15cb4b66eedd0",
-    "path": "files/892b237cd3367b855960d1dd7bb9c001063a1f49926acdc53af15cb4b66eedd0.jpg"
+    "tags": [
+      "fdf",
+      "fdsfjd",
+      "dsf"
+    ],
+    "checksum": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "filetype": ""
   }
 ]

@@ -1,5 +1,6 @@
 backend/files/
 frontend/public/index.js
+frontend/files.json
 
 # Logs
 logs

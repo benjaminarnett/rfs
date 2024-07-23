@@ -32,14 +32,20 @@ export default function FileInput () {
     }
 	}
 
+
+
   return (
     <>
       {isDuplicateFile && <div>File already exists</div>}
-      <form id="fileForm" action="http://localhost:3000/add" method="POST" encType="multipart/form-data">
+      <form id="fileForm" onSubmit={handleSubmit}>
         <input type="file" id="file" name="file" onChange={handleFileChange} key={seed} />
           <div>
-              <label htmlFor="name">Name:</label>
-              <input type="text" id="name" name="name" />
+            <label htmlFor="name">Name:</label>
+            <input type="text" id="name" name="name" />
+          </div>
+          <div>
+            <label for="tags">Tags (line-seperated):</label><br />
+            <textarea name="tags" id="tags" rows="10" cols="40"></textarea>
           </div>
           <input type="hidden" id="checksum" name="checksum" value={fileChecksum} />
           <input type="submit" value="Submit"></input>

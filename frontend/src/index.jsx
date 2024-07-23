@@ -1,7 +1,7 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
+import { createBrowserRouter, RouterProvider, Link } from "react-router-dom";
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Root from './routes/Root'
 import FileInput from './routes/FileInput';
 
@@ -14,18 +14,18 @@ const queryClient = new QueryClient()
 const router = createBrowserRouter([
     {
       path: "/",
-      element: <FileInput />
+      element: <FileInput />,
     },
     {
-      path: "/add",
+      path: "add",
       element: <div>Add Page</div>
     }
 ]);
 
 createRoot(document.getElementById('root')).render(
-    <React.StrictMode>
-        <QueryClientProvider client={queryClient}>
-            <RouterProvider router={router} />
-        </QueryClientProvider>
-    </React.StrictMode>
+  <React.StrictMode>
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+    </QueryClientProvider>
+  </React.StrictMode>
 );

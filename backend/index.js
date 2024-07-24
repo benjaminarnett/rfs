@@ -29,17 +29,7 @@ app.use(cors({
 
 // return if file already exists in files
 function fileDuplicationCheck(checksum) {
-  var isDuplicateFile = false;
-  for (let i = 0; i < files.length; i++) {
-    // if checksum value checksum values match
-    if (files[i].checksum == checksum) {
-      // set duplicate to true
-      isDuplicateFile = true;
-      // end loop
-      break;
-    }
-  }
-  return isDuplicateFile;
+  return files.some(file => file.checksum === checksum)
 }
 
 // return file extension
@@ -85,13 +75,6 @@ app.post("/add", upload.single("file"), async function (req, res) {
   const newPath = filesDir + req.body.checksum + "." + fileType;
   await fsp.rename(req.file.path, newPath);
   req.body.filetype = fileType;
-  req.body.name = req.body.name.trim()
-
-  var tags = req.body.tags;
-  tags = tags.split('\r\n');
-  tags = tags.filter(i => i != '');
-  tags = tags.map(i => i.trim())
-  req.body.tags = tags
   
   // add file metadata to list
   files.push(req.body)

@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { apiFileDuplication } from "../api/files"
+import { isDuplicant, addFile } from "../api/files"
 
 async function getFileChecksum(f) {
   const arrayBuffer = await f.arrayBuffer();
@@ -20,9 +20,11 @@ export default function FileInput() {
 	const handleFileChange = async event => {
     const file = event.target.files[0];
     const checksum = await getFileChecksum(file);
-    const duplicant = await apiFileDuplication(checksum);
+    const duplicant = await isDuplicant(checksum);
     if (duplicant) {
         setSeed(Math.random());
+        inputFile = null;
+        inputChecksum = null;
         setWasDuplicateFile(true);
         setTimeout(() => {
           setWasDuplicateFile(false);
@@ -33,16 +35,18 @@ export default function FileInput() {
     }
 	}
 
-  const handleSubmit = event => {
+  const handleSubmit = async event => {
     event.preventDefault(); 
-
-    let n = inputName.current.value;
-    n = n.trim()
-    console.log(n)
-  
-    let t = inputTags.current.value
-    t = t.split('\n').filter(i => i != '').map(i => i.trim())
-    console.log(t);
+    if (inputFile == null || inputChecksum == null) {
+      return
+    }
+    const obj = {
+      name: inputName.current.value.trim(),
+      tags: inputTags.current.value.split('\n').filter(i => i != '').map(i => i.trim()),
+      sha256: inputChecksum
+    };
+    const res = await addFile(obj, inputFile);
+    console.log(res);
   }
 
   return (

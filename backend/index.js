@@ -29,7 +29,7 @@ app.use(cors({
 
 // return if file already exists in files
 function fileDuplicationCheck(checksum) {
-  return files.some(file => file.checksum === checksum)
+  return files.some(file => file.sha256 === checksum);
 }
 
 // return file extension
@@ -47,7 +47,7 @@ async function getFileExtension(filePath, fileName) {
     }
     fileType = extArray.join(".")
   } catch (error) {
-    fileType = "";
+    fileType = '';
   }
   return fileType;
 }
@@ -61,26 +61,26 @@ app.get("/files", (req, res) => {
 /* POST */
 
 app.post("/file-duplication-check", (req, res) => {
-  const isDuplicateFile = fileDuplicationCheck(req.body.checksum);
-  res.json({isDuplicateFile});
+  res.json({ result: fileDuplicationCheck(req.body.checksum) });
 });
 
 app.post("/add", upload.single("file"), async function (req, res) {
-  if (fileDuplicationCheck(req.body.checksum)) {
+  if (fileDuplicationCheck(req.body.sha256)) {
     res.sendStatus(403);
     return;
   }
-  const fileType = await getFileExtension(req.file.path, req.file.originalname)
+  const fileExt = await getFileExtension(req.file.path, req.file.originalname)
+  const extension = fileExt == '' ? fileExt : '.' + fileExt;
   // rename file as checksum value
-  const newPath = filesDir + req.body.checksum + "." + fileType;
+  const newPath = filesDir + req.body.sha256 + extension;
   await fsp.rename(req.file.path, newPath);
-  req.body.filetype = fileType;
+  req.body.fileExt = fileExt;
   
   // add file metadata to list
   files.push(req.body)
   // write to files.json
   fs.writeFileSync(jsonPath, JSON.stringify(files, null, 2));
-  res.sendStatus(200);
+  res.json("file successfully added");
 });
 
 app.listen(port, () => {

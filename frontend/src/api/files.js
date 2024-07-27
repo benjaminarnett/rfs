@@ -4,7 +4,7 @@ export async function getFiles() {
   return jsonArr;
 }
 
-export async function apiFileDuplication(checksum) {
+export async function isDuplicant(checksum) {
   const response = await fetch('http://localhost:3000/file-duplication-check', {
     method: 'POST',
     headers: {
@@ -13,9 +13,20 @@ export async function apiFileDuplication(checksum) {
     body: JSON.stringify({ checksum })
   }); 
   const data = await response.json();
-  console.log(data)
+  return data.result;
+}
 
+export async function addFile(metadata, file) {
+  const formData = new FormData();
+  formData.append('file', file);
+  Object.keys(metadata).forEach(key => {
+    formData.append(key, metadata[key]);
+  });
 
-  
-  return data.isDuplicateFile;
+  const response = await fetch('http://localhost:3000/add', {
+    method: 'POST',
+    body: formData
+  }); 
+  const data = await response.json();
+  return data
 }

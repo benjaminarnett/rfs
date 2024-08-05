@@ -4,6 +4,7 @@ import { createBrowserRouter, RouterProvider, Link } from "react-router-dom";
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
 import Root from './routes/Root'
 import FileInput from './routes/FileInput';
+import File from './routes/File';
 
 if (process.env.NODE_ENV === 'development') {
 	new EventSource('/esbuild').addEventListener('change', () => location.reload());
@@ -17,8 +18,8 @@ const router = createBrowserRouter([
       element: <FileInput />,
     },
     {
-      path: "add",
-      element: <div>Add Page</div>
+      path: "file/:sha256",
+      element: <File />
     }
 ]);
 

@@ -57,11 +57,11 @@ async function getFileExtension(filePath, fileName) {
 /* GET */
 
 app.get("/metadata/:checksum", (req, res) => {
-  res.json({ result: files.find((e) => e.sha256 === req.params.checksum) });
+  res.json(files.find((e) => e.sha256 === req.params.checksum));
 });
 
 app.get("/duplicate/:checksum", (req, res) => {
-  res.json({ result: fileDuplicationCheck(req.params.checksum) });
+  res.json(fileDuplicationCheck(req.params.checksum));
 });
 
 /* POST */

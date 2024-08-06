@@ -1,13 +1,13 @@
 export async function getFileMetadata(checksum) {
   const response = await fetch(`http://localhost:3000/metadata/${checksum}`);
   const data = await response.json();
-  return data.result;
+  return data;
 }
 
 export async function getIsDuplicate(checksum) {
   const response = await fetch(`http://localhost:3000/duplicate/${checksum}`);
   const data = await response.json();
-  return data.result;
+  return data;
 }
 
 export async function addFile(metadata, file) {

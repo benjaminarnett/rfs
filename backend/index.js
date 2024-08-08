@@ -3,7 +3,6 @@ import express from "express";
 import fs from "fs";
 import fsp from "fs/promises";
 import { resolve } from "path";
-import cors from "cors";
 import { fileTypeFromFile } from "file-type";
 
 const filesDir = "files/";
@@ -23,11 +22,18 @@ const port = 3000;
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.use(
-  cors({
-    origin: "http://localhost:8080",
-  })
-);
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "http://localhost:8080");
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, PUT, POST, PATCH, DELETE, OPTIONS"
+  );
+  next();
+});
 
 // return if file already exists in files
 function fileDuplicationCheck(checksum) {
@@ -77,7 +83,10 @@ app.post("/add", upload.single("file"), async function (req, res) {
   const newPath = filesDir + req.body.sha256 + extension;
   await fsp.rename(req.file.path, newPath);
   req.body.fileExt = fileExt;
-
+  console.log(req.body.tags);
+  if (req.body.tags) {
+    req.body.tags = req.body.tags.split(",");
+  }
   // add file metadata to list
   files.push(req.body);
   // write to files.json

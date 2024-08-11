@@ -14,7 +14,7 @@ if (!fs.existsSync(fileName)) {
 }
 
 const jsonPath = resolve(fileName);
-const files = JSON.parse(fs.readFileSync(jsonPath));
+var files = JSON.parse(fs.readFileSync(jsonPath));
 
 const upload = multer({ dest: filesDir });
 const app = express();
@@ -35,9 +35,13 @@ app.use((req, res, next) => {
   next();
 });
 
-// return if file already exists in files
+// return if file already exists in files (boolean)
 function fileDuplicationCheck(checksum) {
-  return files.some((file) => file.sha256 === checksum);
+  return files.some((obj) => obj.sha256 === checksum);
+}
+
+function fileMetadata(checksum) {
+  return files.find((obj) => obj.sha256 === checksum);
 }
 
 // return file extension
@@ -63,7 +67,7 @@ async function getFileExtension(filePath, fileName) {
 /* GET */
 
 app.get("/metadata/:checksum", (req, res) => {
-  res.json(files.find((e) => e.sha256 === req.params.checksum));
+  res.json(fileMetadata(req.params.checksum));
 });
 
 app.get("/duplicate/:checksum", (req, res) => {
@@ -91,7 +95,20 @@ app.post("/add", upload.single("file"), async function (req, res) {
   files.push(req.body);
   // write to files.json
   fs.writeFileSync(jsonPath, JSON.stringify(files, null, 2));
-  res.json(true);
+  res.sendStatus(201);
+});
+
+/* DELETE */
+
+app.delete("/delete/:checksum", (req, res) => {
+  var ext = fileMetadata(req.params.checksum).fileExt;
+  if (ext) {
+    ext = "." + ext;
+  }
+  files = files.filter((obj) => obj.sha256 !== req.params.checksum);
+  fs.writeFileSync(jsonPath, JSON.stringify(files, null, 2));
+  fs.unlinkSync(filesDir + req.params.checksum + ext);
+  res.sendStatus(200);
 });
 
 app.listen(port, () => {

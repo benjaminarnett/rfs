@@ -19,7 +19,7 @@ function ListFiles() {
 export default function Root() {
   return (
     <>
-      <ListFiles />
+      <p>Hello World</p>
     </>
   );
 }

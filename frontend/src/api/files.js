@@ -20,6 +20,12 @@ export async function addFile(metadata, file) {
     method: "POST",
     body: formData,
   });
-  const data = await response.json();
-  return data;
+  return response;
+}
+
+export async function deleteFile(checksum) {
+  const response = await fetch(`http://localhost:3000/delete/${checksum}`, {
+    method: "DELETE",
+  });
+  return response;
 }

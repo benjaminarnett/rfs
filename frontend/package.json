@@ -1,13 +1,13 @@
 {
-  "name": "frontend",
+  "name": "medium",
   "version": "1.0.0",
   "main": "src/index.jsx",
   "scripts": {
     "dev": "node build.mjs"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Benjamin Arnett",
+  "license": "MIT",
   "description": "",
   "dependencies": {
     "@tanstack/react-query": "^5.50.1",

@@ -37,8 +37,7 @@ export default function FileInput() {
     }
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const handleSubmit = async () => {
     if (!(inputFile && inputChecksum)) {
       return;
     }
@@ -51,7 +50,7 @@ export default function FileInput() {
       sha256: inputChecksum,
     };
     const res = await addFile(obj, inputFile);
-    if (res) {
+    if (res.status === 201) {
       navigate("file/" + inputChecksum);
     }
   };

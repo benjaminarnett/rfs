@@ -70,6 +70,21 @@ app.get("/metadata/:checksum", (req, res) => {
   res.json(fileMetadata(req.params.checksum));
 });
 
+app.get("/file/:checksum", async (req, res) => {
+  var ext = fileMetadata(req.params.checksum).fileExt;
+  if (ext) {
+    ext = "." + ext;
+  }
+  let filePath = filesDir + req.params.checksum + ext;
+  let fileType = await fileTypeFromFile(filePath);
+  res.sendFile(filePath, { root: "." });
+  if (fileType.mime.startsWith("image/")) {
+    res.sendFile(filePath, { root: "." });
+  } else {
+    res.sendStatus(204);
+  }
+});
+
 app.get("/duplicate/:checksum", (req, res) => {
   res.json(fileDuplicationCheck(req.params.checksum));
 });

@@ -1,14 +1,14 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { getFileMetadata, deleteFile } from "../api/files";
+import { getFileData, deleteFile } from "../api/files";
 
 export default function File() {
   const navigate = useNavigate();
   let { sha256 } = useParams();
 
   const { data, isLoading } = useQuery({
-    queryKey: ["fileMetadata", sha256],
-    queryFn: () => getFileMetadata(sha256),
+    queryKey: ["fileData", sha256],
+    queryFn: () => getFileData(sha256),
   });
 
   if (isLoading) {
@@ -18,7 +18,7 @@ export default function File() {
   const del = async () => {
     const result = confirm("Are you sure you want to delete this file?");
     if (result) {
-      const res = await deleteFile(data.sha256);
+      const res = await deleteFile(data.metadata.sha256);
       if (res.status === 200) {
         navigate("/");
       }
@@ -29,14 +29,21 @@ export default function File() {
     <>
       {data && (
         <>
+          {data.file != "no file sent" && (
+            <img
+              style={{ maxWidth: "50%" }}
+              src={URL.createObjectURL(data.file)}
+              alt={data.metadata.name}
+            />
+          )}
           <p>
-            File path: {data.sha256}.{data.fileExt}
+            File path: {data.metadata.sha256}.{data.metadata.fileExt}
           </p>
-          {data.name && <p>Name: {data.name}</p>}
-          {data.tags && (
+          {data.metadata.name && <p>Name: {data.metadata.name}</p>}
+          {data.metadata.tags && (
             <ul>
-              {data.tags.map((tag, index) => (
-                <li key={index}>tag</li>
+              {data.metadata.tags.map((tag, index) => (
+                <li key={index}>{tag}</li>
               ))}
             </ul>
           )}

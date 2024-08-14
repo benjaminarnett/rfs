@@ -68,7 +68,13 @@ export default function FileInput() {
       />
       <div>
         <label htmlFor="name">Name:</label>
-        <input type="text" id="name" name="name" ref={inputName} />
+        <input
+          type="text"
+          id="name"
+          name="name"
+          autoComplete="off"
+          ref={inputName}
+        />
       </div>
       <div>
         <label htmlFor="tags">Tags (line-seperated):</label>

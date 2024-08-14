@@ -1,7 +1,15 @@
-export async function getFileMetadata(checksum) {
-  const response = await fetch(`http://localhost:3000/metadata/${checksum}`);
-  const data = await response.json();
-  return data;
+export async function getFileData(checksum) {
+  var metadataResponse = await fetch(
+    `http://localhost:3000/metadata/${checksum}`
+  );
+  metadataResponse = await metadataResponse.json();
+  var fileResponse = await fetch(`http://localhost:3000/file/${checksum}`);
+  if (fileResponse.status === 200) {
+    fileResponse = await fileResponse.blob();
+  } else {
+    fileResponse = "no file sent";
+  }
+  return { metadata: metadataResponse, file: fileResponse };
 }
 
 export async function getIsDuplicate(checksum) {

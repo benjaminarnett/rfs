@@ -9,6 +9,7 @@ export default function File() {
   const { data, isLoading } = useQuery({
     queryKey: ["fileData", sha256],
     queryFn: () => getFileData(sha256),
+    refetchOnWindowFocus: false,
   });
 
   if (isLoading) {
@@ -29,7 +30,7 @@ export default function File() {
     <>
       {data && (
         <>
-          {data.file != "no file sent" && (
+          {data.file && (
             <img
               style={{ maxWidth: "50%" }}
               src={URL.createObjectURL(data.file)}

@@ -7,7 +7,7 @@ export async function getFileData(checksum) {
   if (fileResponse.status === 200) {
     fileResponse = await fileResponse.blob();
   } else {
-    fileResponse = "no file sent";
+    fileResponse = null;
   }
   return { metadata: metadataResponse, file: fileResponse };
 }

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 //import { getFiles } from "../api/files"
 
 function ListFiles() {
-  const query = useQuery({ queryKey: ["files"], queryFn: getFiles });
+  const data = useQuery({ queryKey: ["files"], queryFn: getFiles });
 
   return (
     <>

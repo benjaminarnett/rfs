@@ -1,9 +1,22 @@
+export async function getFiles() {
+  let response = await fetch(`http://localhost:3000/files`);
+  response = await response.json();
+  return response;
+}
+
+export async function getIsDuplicate(checksum) {
+  let response = await fetch(`http://localhost:3000/duplicate/${checksum}`);
+  response = await response.json();
+  // return boolean
+  return response;
+}
+
 export async function getFileData(checksum) {
-  var metadataResponse = await fetch(
+  let metadataResponse = await fetch(
     `http://localhost:3000/metadata/${checksum}`
   );
   metadataResponse = await metadataResponse.json();
-  var fileResponse = await fetch(`http://localhost:3000/file/${checksum}`);
+  let fileResponse = await fetch(`http://localhost:3000/file/${checksum}`);
   if (fileResponse.status === 200) {
     fileResponse = await fileResponse.blob();
   } else {
@@ -12,19 +25,13 @@ export async function getFileData(checksum) {
   return { metadata: metadataResponse, file: fileResponse };
 }
 
-export async function getIsDuplicate(checksum) {
-  const response = await fetch(`http://localhost:3000/duplicate/${checksum}`);
-  const data = await response.json();
-  return data;
-}
-
 export async function addFile(metadata, file) {
-  const formData = new FormData();
+  let formData = new FormData();
   formData.append("file", file);
   Object.keys(metadata).forEach((key) => {
     formData.append(key, metadata[key]);
   });
-  const response = await fetch("http://localhost:3000/add", {
+  let response = await fetch("http://localhost:3000/add", {
     method: "POST",
     body: formData,
   });
@@ -32,7 +39,7 @@ export async function addFile(metadata, file) {
 }
 
 export async function deleteFile(checksum) {
-  const response = await fetch(`http://localhost:3000/delete/${checksum}`, {
+  let response = await fetch(`http://localhost:3000/delete/${checksum}`, {
     method: "DELETE",
   });
   return response;

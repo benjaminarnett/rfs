@@ -80,6 +80,10 @@ async function getFileExtension(filePath, fileName) {
 
 /* GET */
 
+app.get("/files", (req, res) => {
+  res.json(files);
+});
+
 app.get("/duplicate/:checksum", (req, res) => {
   // send true (boolean) if file is duplicate, false if not
   res.json(fileDuplicate(req.params.checksum));

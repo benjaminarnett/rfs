@@ -51,7 +51,7 @@ export default function FileInput() {
     };
     const res = await addFile(obj, inputFile);
     if (res.status === 201) {
-      navigate("file/" + inputChecksum);
+      navigate(`/file/${inputChecksum}`);
     }
   };
 

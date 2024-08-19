@@ -3,8 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { getIsDuplicate, addFile } from "../api/files";
 
 async function getFileChecksum(f) {
+  // create ArrayBuffer object
   const arrayBuffer = await f.arrayBuffer();
+  // create digest, short fixed-length value generated from hash function (SHA-256)
   const hashBuffer = await crypto.subtle.digest("SHA-256", arrayBuffer);
+  // create shallow-copied array of Uint8Array object
   const hashArray = Array.from(new Uint8Array(hashBuffer));
   return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
 }
@@ -23,14 +26,18 @@ export default function FileInput() {
     const file = event.target.files[0];
     const checksum = await getFileChecksum(file);
     const duplicant = await getIsDuplicate(checksum);
+    // if file is a duplicate (already exists on server)
     if (duplicant) {
+      // reset file input, remove current selected file
       setSeed(Math.random());
       inputFile = null;
       inputChecksum = null;
+      // render "File already exists" feedback
       setWasDuplicateFile(true);
       setTimeout(() => {
+        // remove feedback after 2 seconds
         setWasDuplicateFile(false);
-      }, 2000); // 2 seconds
+      }, 2000);
     } else {
       inputFile = file;
       inputChecksum = checksum;
@@ -38,7 +45,9 @@ export default function FileInput() {
   };
 
   const handleSubmit = async () => {
+    // if file or checksum do not exist
     if (!(inputFile && inputChecksum)) {
+      // end function execution
       return;
     }
     const obj = {
@@ -50,6 +59,7 @@ export default function FileInput() {
       sha256: inputChecksum,
     };
     const res = await addFile(obj, inputFile);
+    // if file successfully added to server
     if (res.status === 201) {
       navigate(`/file/${inputChecksum}`);
     }

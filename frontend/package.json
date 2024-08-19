@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "src/index.jsx",
   "scripts": {
-    "dev": "node build.mjs"
+    "css": "npx tailwindcss -i ./src/css/main.css -o ./public/main.css --minify",
+    "dev": "npm run css && node build.mjs"
   },
   "keywords": [],
   "author": "Benjamin Arnett",
@@ -16,6 +17,7 @@
     "react-router-dom": "^6.24.1"
   },
   "devDependencies": {
-    "esbuild": "0.21.5"
+    "esbuild": "0.21.5",
+    "tailwindcss": "^3.4.10"
   }
 }

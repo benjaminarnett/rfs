@@ -17,9 +17,13 @@ export default function File() {
   }
 
   const del = async () => {
+    // ask user to confirm file deletion
     const result = confirm("Are you sure you want to delete this file?");
+    // if user confirms
     if (result) {
+      // delete file
       const res = await deleteFile(data.metadata.sha256);
+      // if request succeeds, redirect to home page
       if (res.status === 200) {
         navigate("/");
       }

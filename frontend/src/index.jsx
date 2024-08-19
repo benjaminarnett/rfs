@@ -2,7 +2,7 @@ import React from "react";
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider, Link } from "react-router-dom";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
-import Layout from "./routes/Layout";
+import Layout from "./components/Layout";
 import Root from "./routes/Root";
 import FileInput from "./routes/FileInput";
 import File from "./routes/File";

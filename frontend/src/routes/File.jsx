@@ -36,7 +36,6 @@ export default function File() {
         <>
           {data.file && (
             <img
-              style={{ maxWidth: "50%" }}
               src={URL.createObjectURL(data.file)}
               alt={data.metadata.name}
             />
@@ -46,11 +45,15 @@ export default function File() {
           </p>
           {data.metadata.name && <p>Name: {data.metadata.name}</p>}
           {data.metadata.tags && (
-            <ul>
+            <div>
+              Tags:
+              <br />
               {data.metadata.tags.map((tag, index) => (
-                <li key={index}>{tag}</li>
+                <span key={index} className="mr-1">
+                  {tag}
+                </span>
               ))}
-            </ul>
+            </div>
           )}
         </>
       )}

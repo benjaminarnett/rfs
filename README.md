@@ -9,6 +9,7 @@ Rfs is a web application that allows users to store files in the cloud and creat
 - [Built With](#built-with)
 - [Prerequisites](#prerequisites)
 - [Getting Started](#getting-started)
+- [Contribution Guidelines](#contribution-guidelines)
 - [To-Do](#to-do)
 - [Acknowledgments](#acknowledgments)
 
@@ -19,6 +20,7 @@ Rfs is a web application that allows users to store files in the cloud and creat
 - Tagged metadata
 
 ## Screenshots
+
 
 ## Built With
 
@@ -51,6 +53,8 @@ cd frontend
 npm install
 npm run dev
 ```
+
+## Contribution Guidelines
 
 ## To-Do
 

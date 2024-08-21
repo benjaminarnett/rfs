@@ -1,6 +1,10 @@
+![rfs](./assets/rfs.png)
+
 # rfs (Remote File System)
 
 Rfs is a web application that allows users to store files in the cloud and create associated metadata (such as tags). The application uses modern frontend and backed development tools.
+
+The combination of remote access and metadata creation via a web interface enables users to more easily collaborate in carrying out a variety of tasks such as file archival, data set creation, file management, etc.
 
 ## Table of Contents
 
@@ -20,6 +24,17 @@ Rfs is a web application that allows users to store files in the cloud and creat
 - Tagged metadata
 
 ## Screenshots
+
+<table>
+ <tr>
+    <td style="border:none"><img src="./assets/screenshots/addFile.png" alt="Alt text" width="400"></td>    
+    <td style="border:none"><img src="./assets/screenshots/viewFile.png" alt="Alt text" width="400"></td>    
+ </tr>
+ <tr>
+    <td style="border:none"><img src="./assets/screenshots/deleteFile.png" alt="Alt text" width="400"></td>    
+    <td style="border:none"><img src="./assets/screenshots/viewFileList.png" alt="Alt text" width="400"></td>    
+ </tr>
+</table>
 
 
 ## Built With
@@ -78,3 +93,5 @@ npm run dev
 - [Tailwind CSS documentation](https://tailwindcss.com/docs/installation)
 - [esbuild docmentation](https://esbuild.github.io/api/)
 - [MDN Web Docs](https://developer.mozilla.org/en-US/)
+- [Socialify](https://socialify.git.ci/) - project image
+- [Unsplash](https://unsplash.com/photos/a-pool-with-clear-blue-water-and-a-white-bench-xwSr2LMxFL4) - screenshots sample image

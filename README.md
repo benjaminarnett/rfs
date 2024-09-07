@@ -71,6 +71,8 @@ npm run dev
 
 ## Contribution Guidelines
 
+Contributors may contribute by submitting pull requests. Code quality, scope, contribution size, and a number of other such factors will be considered the review process to determine whether proposed changes are merged.  
+
 ## To-Do
 
 - Custom metadata attributes
@@ -78,11 +80,20 @@ npm run dev
 - Rendering
   - PDF rendering
   - Text file rendering
+  - Toggle audio-only for video
 - Editing
   - Metadata editing
     - UI elements
     - JSON
   - Text file editing
+
+<!--
+- Download button
+- File too large (e.g. iso) - Uncaught (in promise) TypeError: SubtleCrypto.digest: ArrayBuffer branch of (ArrayBufferView or ArrayBuffer) can't be an ArrayBuffer or an ArrayBufferView larger than 2 GB
+- Proxy - sole CORS error
+- solve error - entering url yeilds 404 (only served via client, react-router)
+- render html (w/ javascript) as webpage
+-->
 
 ## Acknowledgments
 

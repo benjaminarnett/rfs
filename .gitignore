@@ -1,6 +1,6 @@
 backend/files/
-backend/files.json
 frontend/public/index.js
+frontend/public/index.js.map
 frontend/public/main.css
 
 

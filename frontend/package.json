@@ -3,23 +3,26 @@
   "version": "1.0.0",
   "main": "src/index.jsx",
   "scripts": {
-    "css": "npx tailwindcss -i ./src/css/main.css -o ./public/main.css --watch",
-    "build": "node build.mjs",
-    "dev": "npm-run-all --parallel css build"
+    "css:dev": "npx tailwindcss -i ./src/css/main.css -o ./public/main.css --watch",
+    "css:prod": "npx tailwindcss -i ./src/css/main.css -o ./public/main.css",
+    "build:dev": "node build.mjs",
+    "build:prod": "NODE_ENV=production node build.mjs",
+    "dev": "npm-run-all --parallel css:dev build:dev",
+    "prod": "npm-run-all --parallel css:prod build:prod"
   },
   "keywords": [],
   "author": "Benjamin Arnett",
   "license": "MIT",
   "description": "",
   "dependencies": {
-    "@tanstack/react-query": "^5.50.1",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-router-dom": "^6.24.1"
+    "@tanstack/react-query": "^5.62.9",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-router-dom": "^7.1.1"
   },
   "devDependencies": {
-    "esbuild": "0.21.5",
+    "esbuild": "0.24.2",
     "npm-run-all": "^4.1.5",
-    "tailwindcss": "^3.4.10"
+    "tailwindcss": "^3.4.17"
   }
 }
